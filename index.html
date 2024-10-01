@@ -672,61 +672,89 @@
             });
         }
 
-        // Update UI Based on Logged-in User
-        function updateUI() {
+      // Update UI Based on Logged-in User
+function updateUI() {
+    if (currentUser) {
+        // Change navigation to show user options, including Donate button
+        document.querySelector('nav').innerHTML = `
+            <span>Welcome, ${currentUser.username} (${currentUser.level})</span>
+            <a href="#" id="addFriendBtn">Add Friend</a>
+            <a href="#" id="joinGroupBtn">Join Group</a>
+            <a href="#" id="donateBtn">Donate</a>
+            <a href="#" id="logoutBtn">Logout</a>
+        `;
+
+        // Add Event Listeners for new buttons
+        document.getElementById('addFriendBtn').addEventListener('click', () => {
+            addFriendModal.style.display = 'flex';
+        });
+
+        document.getElementById('joinGroupBtn').addEventListener('click', () => {
+            joinGroupModal.style.display = 'flex';
+        });
+
+        document.getElementById('donateBtn').addEventListener('click', () => {
+            donateModal.style.display = 'flex';
+        });
+
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            currentUser = null;
+            alert('You have been logged out.');
+            document.querySelector('nav').innerHTML = `
+                <a href="#" id="loginBtn">Login</a>
+                <a href="#" id="registerBtn">Register</a>
+                <a href="#" id="donateBtn">Donate</a>
+            `;
+            // Re-attach event listeners
+            document.getElementById('loginBtn').addEventListener('click', () => {
+                loginModal.style.display = 'flex';
+            });
+
+            document.getElementById('registerBtn').addEventListener('click', () => {
+                registerModal.style.display = 'flex';
+            });
+
+            document.getElementById('donateBtn').addEventListener('click', () => {
+                if (currentUser) {
+                    donateModal.style.display = 'flex';
+                } else {
+                    alert('Please login to donate.');
+                }
+            });
+
+            // Clear friends and groups sections
+            friendsList.innerHTML = '<p>No friends added yet.</p>';
+            groupsList.innerHTML = '<p>No groups joined yet.</p>';
+        });
+
+        populateFriends();
+        populateGroups();
+    } else {
+        // If no user is logged in, show default navigation
+        document.querySelector('nav').innerHTML = `
+            <a href="#" id="loginBtn">Login</a>
+            <a href="#" id="registerBtn">Register</a>
+            <a href="#" id="donateBtn">Donate</a>
+        `;
+
+        // Re-attach event listeners for the default navigation items
+        document.getElementById('loginBtn').addEventListener('click', () => {
+            loginModal.style.display = 'flex';
+        });
+
+        document.getElementById('registerBtn').addEventListener('click', () => {
+            registerModal.style.display = 'flex';
+        });
+
+        document.getElementById('donateBtn').addEventListener('click', () => {
             if (currentUser) {
-                // Change navigation to show user options
-                document.querySelector('nav').innerHTML = `
-                    <span>Welcome, ${currentUser.username} (${currentUser.level})</span>
-                    <a href="#" id="addFriendBtn">Add Friend</a>
-                    <a href="#" id="joinGroupBtn">Join Group</a>
-                    <a href="#" id="logoutBtn">Logout</a>
-                `;
-
-                // Add Event Listeners for new buttons
-                document.getElementById('addFriendBtn').addEventListener('click', () => {
-                    addFriendModal.style.display = 'flex';
-                });
-
-                document.getElementById('joinGroupBtn').addEventListener('click', () => {
-                    joinGroupModal.style.display = 'flex';
-                });
-
-                document.getElementById('logoutBtn').addEventListener('click', () => {
-                    currentUser = null;
-                    alert('You have been logged out.');
-                    document.querySelector('nav').innerHTML = `
-                        <a href="#" id="loginBtn">Login</a>
-                        <a href="#" id="registerBtn">Register</a>
-                        <a href="#" id="donateBtn">Donate</a>
-                    `;
-                    // Re-attach event listeners
-                    document.getElementById('loginBtn').addEventListener('click', () => {
-                        loginModal.style.display = 'flex';
-                    });
-
-                    document.getElementById('registerBtn').addEventListener('click', () => {
-                        registerModal.style.display = 'flex';
-                    });
-
-                    document.getElementById('donateBtn').addEventListener('click', () => {
-                        if (currentUser) {
-                            donateModal.style.display = 'flex';
-                        } else {
-                            alert('Please login to donate.');
-                        }
-                    });
-
-                    // Clear friends and groups sections
-                    friendsList.innerHTML = '<p>No friends added yet.</p>';
-                    groupsList.innerHTML = '<p>No groups joined yet.</p>';
-                });
-
-                populateFriends();
-                populateGroups();
+                donateModal.style.display = 'flex';
+            } else {
+                alert('Please login to donate.');
             }
-        }
-
+        });
+    }
+}
         // Populate Friends List
         function populateFriends() {
             if (currentUser.friends.length === 0) {
