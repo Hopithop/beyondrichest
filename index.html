@@ -110,28 +110,53 @@
             padding-bottom: 5px;
         }
 
-        /* Tables */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
+        /* Leaderboard Styles */
+        .leaderboard, .users {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
         }
 
-        th, td {
-            padding: 12px 15px;
-            text-align: left;
-            border-bottom: 1px solid #333;
-        }
-
-        th {
+        .leaderboard-item, .user-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
             background-color: #1f1f1f;
+            border-radius: 10px;
+            transition: transform 0.2s, background-color 0.2s;
+        }
+
+        .leaderboard-item:hover, .user-item:hover {
+            transform: translateY(-5px);
+            background-color: #2a2a2a;
+        }
+
+        .leaderboard-item img, .user-item img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 15px;
+            border: 2px solid #fff;
+        }
+
+        .leaderboard-item .user-info, .user-item .user-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .leaderboard-item .user-info span, .user-item .user-info span {
+            margin-bottom: 5px;
+        }
+
+        .leaderboard-item .user-info .username, .user-item .user-info .username {
+            font-weight: 700;
             font-size: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
         }
 
-        tr:hover {
-            background-color: #1f1f1f;
+        .leaderboard-item .user-info .details, .user-item .user-info .details {
+            font-size: 0.9rem;
+            color: #bbb;
         }
 
         /* User Levels Coloring */
@@ -199,6 +224,8 @@
             border-radius: 10px;
             max-width: 400px;
             margin: auto;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            animation: fadeIn 0.5s ease;
         }
 
         .form-container h3 {
@@ -215,6 +242,11 @@
             background-color: #2a2a2a;
             color: #fff;
             outline: none;
+            transition: border 0.3s;
+        }
+
+        .form-container input:focus, .form-container select:focus {
+            border-color: #1E90FF;
         }
 
         .form-container input::placeholder {
@@ -238,6 +270,7 @@
             background-color: rgba(0,0,0,0.8); /* Black w/ opacity */
             justify-content: center;
             align-items: center;
+            animation: fadeInModal 0.5s ease;
         }
 
         .modal-content {
@@ -248,6 +281,8 @@
             width: 90%;
             max-width: 500px;
             position: relative;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            animation: slideIn 0.5s ease;
         }
 
         .close {
@@ -258,6 +293,7 @@
             font-size: 28px;
             font-weight: bold;
             cursor: pointer;
+            transition: color 0.3s;
         }
 
         .close:hover,
@@ -265,6 +301,22 @@
             color: #fff;
             text-decoration: none;
             cursor: pointer;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInModal {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(-50px); }
+            to { transform: translateY(0); }
         }
 
         /* Responsive Design */
@@ -282,9 +334,17 @@
                 font-size: 1.5rem;
             }
 
-            th, td {
-                padding: 10px;
+            .leaderboard-item img, .user-item img {
+                width: 40px;
+                height: 40px;
+            }
+
+            .leaderboard-item .user-info .username, .user-item .user-info .username {
                 font-size: 0.9rem;
+            }
+
+            .leaderboard-item .user-info .details, .user-item .user-info .details {
+                font-size: 0.8rem;
             }
 
             .form-container {
@@ -310,44 +370,37 @@
             <!-- Leaderboard Section -->
             <section>
                 <h2>Global Leaderboard</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Rank</th>
-                            <th>User</th>
-                            <th>Amount Donated</th>
-                            <th>Country</th>
-                        </tr>
-                    </thead>
-                    <tbody id="leaderboard-body">
-                        <!-- Leaderboard data populated by JavaScript -->
-                    </tbody>
-                </table>
+                <div class="leaderboard">
+                    <div class="leaderboard-item">
+                        <img src="https://via.placeholder.com/50" alt="User PFP">
+                        <div class="user-info">
+                            <span class="username">Username</span>
+                            <span class="details">$0 Donated • Country</span>
+                        </div>
+                    </div>
+                    <!-- More leaderboard items will be populated by JavaScript -->
+                </div>
             </section>
 
             <!-- User Levels Section -->
             <section>
                 <h2>User Levels</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>User</th>
-                            <th>Level</th>
-                            <th>Friends</th>
-                            <th>Groups</th>
-                        </tr>
-                    </thead>
-                    <tbody id="users-body">
-                        <!-- Users data populated by JavaScript -->
-                    </tbody>
-                </table>
+                <div class="users">
+                    <div class="user-item">
+                        <img src="https://via.placeholder.com/50" alt="User PFP">
+                        <div class="user-info">
+                            <span class="username">Username</span>
+                            <span class="details">Level: VIP • Friends: 0 • Groups: None</span>
+                        </div>
+                    </div>
+                    <!-- More user items will be populated by JavaScript -->
+                </div>
             </section>
 
             <!-- Friends Section -->
             <section>
                 <h2>Friends</h2>
                 <div id="friends-list">
-                    <!-- Friends list populated by JavaScript -->
                     <p>No friends added yet.</p>
                 </div>
             </section>
@@ -356,7 +409,6 @@
             <section>
                 <h2>Groups</h2>
                 <div id="groups-list">
-                    <!-- Groups list populated by JavaScript -->
                     <p>No groups joined yet.</p>
                 </div>
             </section>
@@ -387,6 +439,7 @@
                 <input type="text" id="registerUsername" placeholder="Username" required>
                 <input type="password" id="registerPassword" placeholder="Password" required>
                 <input type="text" id="registerCountry" placeholder="Country" required>
+                <input type="text" id="registerPFP" placeholder="Profile Picture URL" required>
                 <button class="btn form-btn" id="registerSubmit">Register</button>
             </div>
         </div>
@@ -442,6 +495,7 @@
                 username: string,
                 password: string,
                 country: string,
+                profilePicture: string (URL),
                 amountDonated: number,
                 level: string,
                 friends: array of usernames,
@@ -547,8 +601,9 @@
             const username = document.getElementById('registerUsername').value.trim();
             const password = document.getElementById('registerPassword').value.trim();
             const country = document.getElementById('registerCountry').value.trim();
+            const pfp = document.getElementById('registerPFP').value.trim();
 
-            if (!username || !password || !country) {
+            if (!username || !password || !country || !pfp) {
                 alert('Please fill in all fields.');
                 return;
             }
@@ -570,6 +625,7 @@
                 username: username,
                 password: password,
                 country: country,
+                profilePicture: pfp,
                 amountDonated: 0,
                 level: initialLevel,
                 friends: [],
@@ -645,14 +701,16 @@
             users.sort((a, b) => b.amountDonated - a.amountDonated);
             leaderboardBody.innerHTML = '';
             users.forEach((user, index) => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td>${index + 1}</td>
-                    <td>${user.username}</td>
-                    <td>$${user.amountDonated.toLocaleString()}</td>
-                    <td>${user.country}</td>
+                const div = document.createElement('div');
+                div.classList.add('leaderboard-item');
+                div.innerHTML = `
+                    <img src="${user.profilePicture}" alt="${user.username} PFP">
+                    <div class="user-info">
+                        <span class="username">${user.username}</span>
+                        <span class="details">$${user.amountDonated.toLocaleString()} Donated • ${user.country}</span>
+                    </div>
                 `;
-                leaderboardBody.appendChild(tr);
+                leaderboardBody.appendChild(div);
             });
         }
 
@@ -661,100 +719,103 @@
             let users = JSON.parse(localStorage.getItem('users'));
             usersBody.innerHTML = '';
             users.forEach(user => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td>${user.username}</td>
-                    <td class="level-${user.level}">${user.level}</td>
-                    <td>${user.friends.length}</td>
-                    <td>${user.groups.join(', ') || 'None'}</td>
+                const div = document.createElement('div');
+                div.classList.add('user-item');
+                div.innerHTML = `
+                    <img src="${user.profilePicture}" alt="${user.username} PFP">
+                    <div class="user-info">
+                        <span class="username">${user.username}</span>
+                        <span class="details">Level: <span class="level-${user.level}">${user.level}</span> • Friends: ${user.friends.length} • Groups: ${user.groups.join(', ') || 'None'}</span>
+                    </div>
                 `;
-                usersBody.appendChild(tr);
+                usersBody.appendChild(div);
             });
         }
 
-      // Update UI Based on Logged-in User
-function updateUI() {
-    if (currentUser) {
-        // Change navigation to show user options, including Donate button
-        document.querySelector('nav').innerHTML = `
-            <span>Welcome, ${currentUser.username} (${currentUser.level})</span>
-            <a href="#" id="addFriendBtn">Add Friend</a>
-            <a href="#" id="joinGroupBtn">Join Group</a>
-            <a href="#" id="donateBtn">Donate</a>
-            <a href="#" id="logoutBtn">Logout</a>
-        `;
-
-        // Add Event Listeners for new buttons
-        document.getElementById('addFriendBtn').addEventListener('click', () => {
-            addFriendModal.style.display = 'flex';
-        });
-
-        document.getElementById('joinGroupBtn').addEventListener('click', () => {
-            joinGroupModal.style.display = 'flex';
-        });
-
-        document.getElementById('donateBtn').addEventListener('click', () => {
-            donateModal.style.display = 'flex';
-        });
-
-        document.getElementById('logoutBtn').addEventListener('click', () => {
-            currentUser = null;
-            alert('You have been logged out.');
-            document.querySelector('nav').innerHTML = `
-                <a href="#" id="loginBtn">Login</a>
-                <a href="#" id="registerBtn">Register</a>
-                <a href="#" id="donateBtn">Donate</a>
-            `;
-            // Re-attach event listeners
-            document.getElementById('loginBtn').addEventListener('click', () => {
-                loginModal.style.display = 'flex';
-            });
-
-            document.getElementById('registerBtn').addEventListener('click', () => {
-                registerModal.style.display = 'flex';
-            });
-
-            document.getElementById('donateBtn').addEventListener('click', () => {
-                if (currentUser) {
-                    donateModal.style.display = 'flex';
-                } else {
-                    alert('Please login to donate.');
-                }
-            });
-
-            // Clear friends and groups sections
-            friendsList.innerHTML = '<p>No friends added yet.</p>';
-            groupsList.innerHTML = '<p>No groups joined yet.</p>';
-        });
-
-        populateFriends();
-        populateGroups();
-    } else {
-        // If no user is logged in, show default navigation
-        document.querySelector('nav').innerHTML = `
-            <a href="#" id="loginBtn">Login</a>
-            <a href="#" id="registerBtn">Register</a>
-            <a href="#" id="donateBtn">Donate</a>
-        `;
-
-        // Re-attach event listeners for the default navigation items
-        document.getElementById('loginBtn').addEventListener('click', () => {
-            loginModal.style.display = 'flex';
-        });
-
-        document.getElementById('registerBtn').addEventListener('click', () => {
-            registerModal.style.display = 'flex';
-        });
-
-        document.getElementById('donateBtn').addEventListener('click', () => {
+        // Update UI Based on Logged-in User
+        function updateUI() {
             if (currentUser) {
-                donateModal.style.display = 'flex';
+                // Change navigation to show user options, including Donate button
+                document.querySelector('nav').innerHTML = `
+                    <span>Welcome, ${currentUser.username} (${currentUser.level})</span>
+                    <a href="#" id="addFriendBtn">Add Friend</a>
+                    <a href="#" id="joinGroupBtn">Join Group</a>
+                    <a href="#" id="donateBtn">Donate</a>
+                    <a href="#" id="logoutBtn">Logout</a>
+                `;
+
+                // Add Event Listeners for new buttons
+                document.getElementById('addFriendBtn').addEventListener('click', () => {
+                    addFriendModal.style.display = 'flex';
+                });
+
+                document.getElementById('joinGroupBtn').addEventListener('click', () => {
+                    joinGroupModal.style.display = 'flex';
+                });
+
+                document.getElementById('donateBtn').addEventListener('click', () => {
+                    donateModal.style.display = 'flex';
+                });
+
+                document.getElementById('logoutBtn').addEventListener('click', () => {
+                    currentUser = null;
+                    alert('You have been logged out.');
+                    document.querySelector('nav').innerHTML = `
+                        <a href="#" id="loginBtn">Login</a>
+                        <a href="#" id="registerBtn">Register</a>
+                        <a href="#" id="donateBtn">Donate</a>
+                    `;
+                    // Re-attach event listeners
+                    document.getElementById('loginBtn').addEventListener('click', () => {
+                        loginModal.style.display = 'flex';
+                    });
+
+                    document.getElementById('registerBtn').addEventListener('click', () => {
+                        registerModal.style.display = 'flex';
+                    });
+
+                    document.getElementById('donateBtn').addEventListener('click', () => {
+                        if (currentUser) {
+                            donateModal.style.display = 'flex';
+                        } else {
+                            alert('Please login to donate.');
+                        }
+                    });
+
+                    // Clear friends and groups sections
+                    friendsList.innerHTML = '<p>No friends added yet.</p>';
+                    groupsList.innerHTML = '<p>No groups joined yet.</p>';
+                });
+
+                populateFriends();
+                populateGroups();
             } else {
-                alert('Please login to donate.');
+                // If no user is logged in, show default navigation
+                document.querySelector('nav').innerHTML = `
+                    <a href="#" id="loginBtn">Login</a>
+                    <a href="#" id="registerBtn">Register</a>
+                    <a href="#" id="donateBtn">Donate</a>
+                `;
+
+                // Re-attach event listeners for the default navigation items
+                document.getElementById('loginBtn').addEventListener('click', () => {
+                    loginModal.style.display = 'flex';
+                });
+
+                document.getElementById('registerBtn').addEventListener('click', () => {
+                    registerModal.style.display = 'flex';
+                });
+
+                document.getElementById('donateBtn').addEventListener('click', () => {
+                    if (currentUser) {
+                        donateModal.style.display = 'flex';
+                    } else {
+                        alert('Please login to donate.');
+                    }
+                });
             }
-        });
-    }
-}
+        }
+
         // Populate Friends List
         function populateFriends() {
             if (currentUser.friends.length === 0) {
