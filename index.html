@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Donation Leaderboard</title>
-    <!-- Google Fonts for Enhanced Typography -->
+    <title>BeyondRichest</title>
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <!-- Embedded CSS -->
     <style>
@@ -17,13 +17,20 @@
         html, body {
             height: 100%;
             font-family: 'Roboto', sans-serif;
-            background-color: #121212;
-            color: #ffffff;
+            background-color: #ffffff;
+            color: #000000;
+            transition: background-color 0.5s, color 0.5s;
         }
 
         a {
             text-decoration: none;
             color: inherit;
+        }
+
+        /* Dark Mode Styles */
+        body.dark-mode {
+            background-color: #121212;
+            color: #ffffff;
         }
 
         /* Container */
@@ -43,30 +50,81 @@
             justify-content: space-between;
             align-items: center;
             padding: 20px 0;
-            border-bottom: 1px solid #333;
+            border-bottom: 1px solid #ccc;
+            position: relative;
         }
 
         header h1 {
-            font-size: 2rem;
-            letter-spacing: 2px;
+            font-size: 2.5rem;
+            font-weight: 700;
+            animation: fadeInDown 1s ease;
         }
 
+        /* Dark Mode Toggle */
+        .toggle-switch {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .toggle-switch input {
+            display: none;
+        }
+
+        .slider {
+            width: 50px;
+            height: 25px;
+            background-color: #ccc;
+            border-radius: 25px;
+            position: relative;
+            transition: background-color 0.3s;
+        }
+
+        .slider::before {
+            content: '';
+            position: absolute;
+            width: 21px;
+            height: 21px;
+            background-color: #ffffff;
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: transform 0.3s;
+        }
+
+        input:checked + .slider {
+            background-color: #1E90FF;
+        }
+
+        input:checked + .slider::before {
+            transform: translateX(25px);
+        }
+        
         /* Navigation */
         nav {
             display: flex;
             gap: 15px;
+            animation: fadeIn 1s ease;
         }
 
         nav a {
             padding: 8px 16px;
-            border: 2px solid #fff;
+            border: 2px solid #000;
             border-radius: 25px;
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
             background-color: transparent;
-            color: #fff;
+            color: #000;
             cursor: pointer;
+        }
+
+        body.dark-mode nav a {
+            border-color: #ffffff;
+            color: #ffffff;
         }
 
         nav a::after {
@@ -88,6 +146,44 @@
         }
 
         nav a:hover {
+            background-color: #000;
+            color: #fff;
+        }
+
+        body.dark-mode nav a:hover {
+            background-color: #fff;
+            color: #000;
+        }
+
+        /* Leaderboard Filters */
+        .filters {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+            animation: fadeIn 1s ease;
+        }
+
+        .filters button {
+            padding: 6px 12px;
+            border: 2px solid #000;
+            border-radius: 15px;
+            background-color: transparent;
+            color: #000;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode .filters button {
+            border-color: #ffffff;
+            color: #ffffff;
+        }
+
+        .filters button:hover {
+            background-color: #000;
+            color: #fff;
+        }
+
+        body.dark-mode .filters button:hover {
             background-color: #fff;
             color: #000;
         }
@@ -106,171 +202,261 @@
         section h2 {
             font-size: 1.8rem;
             margin-bottom: 20px;
-            border-bottom: 2px solid #333;
+            border-bottom: 2px solid #ccc;
             padding-bottom: 5px;
+            animation: fadeInLeft 1s ease;
         }
 
-        /* Tables */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
+        body.dark-mode section h2 {
+            border-color: #ffffff;
         }
 
-        th, td {
-            padding: 12px 15px;
-            text-align: left;
-            border-bottom: 1px solid #333;
+        /* Leaderboard Styles */
+        .leaderboard {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            animation: fadeIn 1s ease;
         }
 
-        th {
-            background-color: #1f1f1f;
-            font-size: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        tr:hover {
-            background-color: #1f1f1f;
-        }
-
-        /* User Levels Coloring */
-        .level-VIP {
-            color: #1E90FF;
-            font-weight: bold;
-        }
-
-        .level-Elite {
-            color: #32CD32;
-            font-weight: bold;
-        }
-
-        .level-Noble {
-            color: #FFD700;
-            font-weight: bold;
-        }
-
-        .level-King {
-            color: #FF4500;
-            font-weight: bold;
-        }
-
-        /* Buttons */
-        .btn {
-            padding: 10px 20px;
-            border: 2px solid #fff;
-            background-color: transparent;
-            color: #fff;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border-radius: 5px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 300%;
-            height: 300%;
-            background: rgba(255, 255, 255, 0.2);
-            transition: all 0.5s ease;
-            border-radius: 50%;
-            transform: translate(-50%, -50%) scale(0);
-            z-index: -1;
-        }
-
-        .btn:hover::after {
-            transform: translate(-50%, -50%) scale(1);
-        }
-
-        .btn:hover {
-            background-color: #fff;
-            color: #000;
-        }
-
-        /* Forms */
-        .form-container {
-            background-color: #1f1f1f;
-            padding: 20px;
+        .leaderboard-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background-color: #f9f9f9;
             border-radius: 10px;
-            max-width: 400px;
-            margin: auto;
+            transition: transform 0.3s, background-color 0.3s;
+            position: relative;
         }
 
-        .form-container h3 {
-            margin-bottom: 15px;
-            text-align: center;
+        body.dark-mode .leaderboard-item {
+            background-color: #1f1f1f;
         }
 
-        .form-container input, .form-container select {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #333;
-            border-radius: 5px;
+        .leaderboard-item:hover {
+            transform: translateY(-5px);
+            background-color: #e0e0e0;
+        }
+
+        body.dark-mode .leaderboard-item:hover {
             background-color: #2a2a2a;
-            color: #fff;
-            outline: none;
         }
 
-        .form-container input::placeholder {
+        .leaderboard-item img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 15px;
+            border: 3px solid #000;
+            animation: pulse 2s infinite;
+        }
+
+        body.dark-mode .leaderboard-item img {
+            border-color: #fff;
+        }
+
+        .leaderboard-item .user-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .leaderboard-item .user-info .username {
+            font-weight: 700;
+            font-size: 1.1rem;
+            position: relative;
+        }
+
+        /* Aurora Effect for Levels */
+        .aurora {
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            width: calc(100% + 10px);
+            height: calc(100% + 10px);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: aurora 4s infinite;
+        }
+
+        .level-VIP .aurora {
+            box-shadow: 0 0 15px 5px rgba(30, 144, 255, 0.7);
+        }
+
+        .level-Elite .aurora {
+            box-shadow: 0 0 15px 5px rgba(50, 205, 50, 0.7);
+        }
+
+        .level-Noble .aurora {
+            box-shadow: 0 0 15px 5px rgba(255, 215, 0, 0.7);
+        }
+
+        .level-King .aurora {
+            box-shadow: 0 0 15px 5px rgba(255, 69, 0, 0.7);
+        }
+
+        .leaderboard-item .user-info .details {
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+        body.dark-mode .leaderboard-item .user-info .details {
             color: #bbb;
         }
 
-        .form-container .form-btn {
-            width: 100%;
+        /* Chat Section */
+        .chat-section {
+            animation: fadeInUp 1s ease;
         }
 
-        /* Modal */
-        .modal {
-            display: none; /* Hidden by default */
-            position: fixed; /* Stay in place */
-            z-index: 1000; /* Sit on top */
-            left: 0;
-            top: 0;
+        .chat-box {
             width: 100%;
-            height: 100%;
-            overflow: auto; /* Enable scroll if needed */
-            background-color: rgba(0,0,0,0.8); /* Black w/ opacity */
-            justify-content: center;
-            align-items: center;
-        }
-
-        .modal-content {
-            background-color: #1f1f1f;
-            padding: 20px;
-            border: 1px solid #333;
+            max-width: 800px;
+            margin: auto;
+            background-color: #f1f1f1;
             border-radius: 10px;
-            width: 90%;
-            max-width: 500px;
-            position: relative;
+            padding: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            overflow-y: auto;
+            max-height: 300px;
+            transition: background-color 0.5s;
         }
 
-        .close {
-            color: #aaa;
+        body.dark-mode .chat-box {
+            background-color: #1f1f1f;
+            color: #ffffff;
+        }
+
+        .chat-message {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .chat-message img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #000;
+        }
+
+        body.dark-mode .chat-message img {
+            border-color: #fff;
+        }
+
+        .chat-message .message-content {
+            background-color: #e0e0e0;
+            padding: 10px 15px;
+            border-radius: 15px;
+            max-width: 70%;
+            position: relative;
+            transition: background-color 0.3s;
+        }
+
+        body.dark-mode .chat-message .message-content {
+            background-color: #2a2a2a;
+        }
+
+        .chat-message .message-content::after {
+            content: '';
             position: absolute;
             top: 10px;
-            right: 20px;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
+            left: -10px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: transparent #e0e0e0 transparent transparent;
         }
 
-        .close:hover,
-        .close:focus {
+        body.dark-mode .chat-message .message-content::after {
+            border-color: transparent #2a2a2a transparent transparent;
+        }
+
+        .chat-input {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 10px;
+            border: 2px solid #ccc;
+            border-radius: 20px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .chat-input input:focus {
+            border-color: #1E90FF;
+        }
+
+        .chat-input button {
+            padding: 10px 20px;
+            border: none;
+            background-color: #1E90FF;
             color: #fff;
-            text-decoration: none;
+            border-radius: 20px;
             cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .chat-input button:hover {
+            background-color: #0d6efd;
+        }
+
+        /* Dark Mode Styles for Chat */
+        body.dark-mode .chat-input input {
+            background-color: #2a2a2a;
+            color: #ffffff;
+            border-color: #555;
+        }
+
+        body.dark-mode .chat-input input::placeholder {
+            color: #bbb;
+        }
+
+        body.dark-mode .chat-input button {
+            background-color: #1E90FF;
+        }
+
+        /* Animations */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInLeft {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes aurora {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(30, 144, 255, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(30, 144, 255, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(30, 144, 255, 0); }
         }
 
         /* Responsive Design */
         @media (max-width: 768px) {
             header h1 {
-                font-size: 1.5rem;
+                font-size: 2rem;
             }
 
             nav a {
@@ -282,13 +468,21 @@
                 font-size: 1.5rem;
             }
 
-            th, td {
-                padding: 10px;
-                font-size: 0.9rem;
+            .leaderboard-item img {
+                width: 50px;
+                height: 50px;
             }
 
-            .form-container {
-                padding: 15px;
+            .leaderboard-item .user-info .username {
+                font-size: 1rem;
+            }
+
+            .leaderboard-item .user-info .details {
+                font-size: 0.8rem;
+            }
+
+            .chat-box {
+                max-height: 200px;
             }
         }
     </style>
@@ -297,12 +491,24 @@
     <div class="container">
         <!-- Header Section -->
         <header>
-            <h1>Donation Leaderboard</h1>
+            <h1>BeyondRichest</h1>
             <nav>
                 <a href="#" id="loginBtn">Login</a>
                 <a href="#" id="registerBtn">Register</a>
                 <a href="#" id="donateBtn">Donate</a>
+                <a href="#" id="wealthBtn">Wealth</a>
             </nav>
+            <!-- Dark Mode Toggle -->
+            <div class="toggle-switch">
+                <input type="checkbox" id="darkModeToggle">
+                <label for="darkModeToggle" class="slider"></label>
+            </div>
+            <!-- Leaderboard Filters -->
+            <div class="filters">
+                <button id="filterWorld">World</button>
+                <button id="filterCountry">Country</button>
+                <button id="filterLocal">Local</button>
+            </div>
         </header>
 
         <!-- Main Content -->
@@ -310,54 +516,20 @@
             <!-- Leaderboard Section -->
             <section>
                 <h2>Global Leaderboard</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Rank</th>
-                            <th>User</th>
-                            <th>Amount Donated</th>
-                            <th>Country</th>
-                        </tr>
-                    </thead>
-                    <tbody id="leaderboard-body">
-                        <!-- Leaderboard data populated by JavaScript -->
-                    </tbody>
-                </table>
-            </section>
-
-            <!-- User Levels Section -->
-            <section>
-                <h2>User Levels</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>User</th>
-                            <th>Level</th>
-                            <th>Friends</th>
-                            <th>Groups</th>
-                        </tr>
-                    </thead>
-                    <tbody id="users-body">
-                        <!-- Users data populated by JavaScript -->
-                    </tbody>
-                </table>
-            </section>
-
-            <!-- Friends Section -->
-            <section>
-                <h2>Friends</h2>
-                <div id="friends-list">
-                    <!-- Friends list populated by JavaScript -->
-                    <p>No friends added yet.</p>
+                <div class="leaderboard" id="leaderboard">
+                    <!-- Leaderboard items populated by JavaScript -->
                 </div>
             </section>
 
-            <!-- Groups Section -->
-            <section>
-                <h2>Groups</h2>
-                <div id="groups-list">
-                    <!-- Groups list populated by JavaScript -->
-                    <p>No groups joined yet.</p>
+            <!-- Chat Section -->
+            <section class="chat-section">
+                <h2>Global Chat</h2>
+                <div class="chat-box" id="chatBox">
+                    <!-- Chat messages populated by JavaScript -->
+                </div>
+                <div class="chat-input">
+                    <input type="text" id="chatMessage" placeholder="Type your message here..." />
+                    <button id="sendChat">Send</button>
                 </div>
             </section>
         </main>
@@ -387,6 +559,7 @@
                 <input type="text" id="registerUsername" placeholder="Username" required>
                 <input type="password" id="registerPassword" placeholder="Password" required>
                 <input type="text" id="registerCountry" placeholder="Country" required>
+                <input type="url" id="registerPFP" placeholder="Profile Picture URL" required>
                 <button class="btn form-btn" id="registerSubmit">Register</button>
             </div>
         </div>
@@ -400,6 +573,18 @@
                 <h3>Donate</h3>
                 <input type="number" id="donationAmount" placeholder="Donation Amount (USD)" min="1" required>
                 <button class="btn form-btn" id="donateSubmit">Donate</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Wealth Modal -->
+    <div id="wealthModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeWealth">&times;</span>
+            <div class="form-container">
+                <h3>Wealth</h3>
+                <p>Demonstrate your wealth by making a significant donation!</p>
+                <button class="btn form-btn" id="makeWealthDonation">Donate Wealth</button>
             </div>
         </div>
     </div>
@@ -442,6 +627,7 @@
                 username: string,
                 password: string,
                 country: string,
+                profilePicture: string (URL),
                 amountDonated: number,
                 level: string,
                 friends: array of usernames,
@@ -461,29 +647,43 @@
         const loginBtn = document.getElementById('loginBtn');
         const registerBtn = document.getElementById('registerBtn');
         const donateBtn = document.getElementById('donateBtn');
+        const wealthBtn = document.getElementById('wealthBtn');
 
         const loginModal = document.getElementById('loginModal');
         const registerModal = document.getElementById('registerModal');
         const donateModal = document.getElementById('donateModal');
+        const wealthModal = document.getElementById('wealthModal');
         const addFriendModal = document.getElementById('addFriendModal');
         const joinGroupModal = document.getElementById('joinGroupModal');
 
         const closeLogin = document.getElementById('closeLogin');
         const closeRegister = document.getElementById('closeRegister');
         const closeDonate = document.getElementById('closeDonate');
+        const closeWealth = document.getElementById('closeWealth');
         const closeAddFriend = document.getElementById('closeAddFriend');
         const closeJoinGroup = document.getElementById('closeJoinGroup');
 
         const loginSubmit = document.getElementById('loginSubmit');
         const registerSubmit = document.getElementById('registerSubmit');
         const donateSubmit = document.getElementById('donateSubmit');
+        const makeWealthDonation = document.getElementById('makeWealthDonation');
         const addFriendSubmit = document.getElementById('addFriendSubmit');
         const joinGroupSubmit = document.getElementById('joinGroupSubmit');
 
-        const leaderboardBody = document.getElementById('leaderboard-body');
+        const leaderboard = document.getElementById('leaderboard');
         const usersBody = document.getElementById('users-body');
         const friendsList = document.getElementById('friends-list');
         const groupsList = document.getElementById('groups-list');
+
+        const darkModeToggle = document.getElementById('darkModeToggle');
+
+        const filterWorld = document.getElementById('filterWorld');
+        const filterCountry = document.getElementById('filterCountry');
+        const filterLocal = document.getElementById('filterLocal');
+
+        const chatBox = document.getElementById('chatBox');
+        const chatMessageInput = document.getElementById('chatMessage');
+        const sendChat = document.getElementById('sendChat');
 
         // Event Listeners to Open Modals
         loginBtn.addEventListener('click', () => {
@@ -502,6 +702,14 @@
             }
         });
 
+        wealthBtn.addEventListener('click', () => {
+            if (currentUser) {
+                wealthModal.style.display = 'flex';
+            } else {
+                alert('Please login to demonstrate your wealth.');
+            }
+        });
+
         // Event Listeners to Close Modals
         closeLogin.addEventListener('click', () => {
             loginModal.style.display = 'none';
@@ -513,6 +721,10 @@
 
         closeDonate.addEventListener('click', () => {
             donateModal.style.display = 'none';
+        });
+
+        closeWealth.addEventListener('click', () => {
+            wealthModal.style.display = 'none';
         });
 
         closeAddFriend.addEventListener('click', () => {
@@ -534,6 +746,9 @@
             if (e.target == donateModal) {
                 donateModal.style.display = 'none';
             }
+            if (e.target == wealthModal) {
+                wealthModal.style.display = 'none';
+            }
             if (e.target == addFriendModal) {
                 addFriendModal.style.display = 'none';
             }
@@ -547,8 +762,9 @@
             const username = document.getElementById('registerUsername').value.trim();
             const password = document.getElementById('registerPassword').value.trim();
             const country = document.getElementById('registerCountry').value.trim();
+            const pfp = document.getElementById('registerPFP').value.trim();
 
-            if (!username || !password || !country) {
+            if (!username || !password || !country || !pfp) {
                 alert('Please fill in all fields.');
                 return;
             }
@@ -570,6 +786,7 @@
                 username: username,
                 password: password,
                 country: country,
+                profilePicture: pfp,
                 amountDonated: 0,
                 level: initialLevel,
                 friends: [],
@@ -601,6 +818,7 @@
                 alert(`Welcome back, ${currentUser.username}!`);
                 loginModal.style.display = 'none';
                 updateUI();
+                populateChat();
             } else {
                 alert('Invalid username or password.');
             }
@@ -625,6 +843,33 @@
                 alert(`Thank you for your donation of $${amount.toLocaleString()}! You are now a ${currentUser.level}.`);
                 donateModal.style.display = 'none';
                 updateUI();
+                populateLeaderboard();
+            } else {
+                alert('User not found.');
+            }
+        });
+
+        // Wealth Functionality
+        makeWealthDonation.addEventListener('click', () => {
+            const wealthAmount = prompt("Enter the amount to demonstrate your wealth (minimum $1000):");
+            const amount = parseFloat(wealthAmount);
+            if (isNaN(amount) || amount < 1000) {
+                alert('Please enter a valid amount of at least $1000.');
+                return;
+            }
+
+            let users = JSON.parse(localStorage.getItem('users'));
+            const userIndex = users.findIndex(user => user.username === currentUser.username);
+
+            if (userIndex !== -1) {
+                users[userIndex].amountDonated += amount;
+                users[userIndex].level = determineLevel(users[userIndex].amountDonated);
+                currentUser = users[userIndex];
+                localStorage.setItem('users', JSON.stringify(users));
+                alert(`Wealth demonstrated! Your donation of $${amount.toLocaleString()} has been added. You are now a ${currentUser.level}.`);
+                wealthModal.style.display = 'none';
+                updateUI();
+                populateLeaderboard();
             } else {
                 alert('User not found.');
             }
@@ -641,123 +886,117 @@
         // Populate Leaderboard
         function populateLeaderboard() {
             let users = JSON.parse(localStorage.getItem('users'));
+            leaderboard.innerHTML = '';
+
             // Sort users by amountDonated descending
             users.sort((a, b) => b.amountDonated - a.amountDonated);
-            leaderboardBody.innerHTML = '';
+
             users.forEach((user, index) => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td>${index + 1}</td>
-                    <td>${user.username}</td>
-                    <td>$${user.amountDonated.toLocaleString()}</td>
-                    <td>${user.country}</td>
+                const div = document.createElement('div');
+                div.classList.add('leaderboard-item', `level-${user.level}`);
+                div.innerHTML = `
+                    <img src="${user.profilePicture}" alt="${user.username} PFP">
+                    <div class="user-info">
+                        <span class="username">${user.username}</span>
+                        <span class="details">$${user.amountDonated.toLocaleString()} Donated • ${user.country}</span>
+                        <div class="aurora"></div>
+                    </div>
                 `;
-                leaderboardBody.appendChild(tr);
+                leaderboard.appendChild(div);
             });
         }
 
-        // Populate Users Table
-        function populateUsers() {
-            let users = JSON.parse(localStorage.getItem('users'));
-            usersBody.innerHTML = '';
-            users.forEach(user => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td>${user.username}</td>
-                    <td class="level-${user.level}">${user.level}</td>
-                    <td>${user.friends.length}</td>
-                    <td>${user.groups.join(', ') || 'None'}</td>
-                `;
-                usersBody.appendChild(tr);
-            });
-        }
-
-      // Update UI Based on Logged-in User
-function updateUI() {
-    if (currentUser) {
-        // Change navigation to show user options, including Donate button
-        document.querySelector('nav').innerHTML = `
-            <span>Welcome, ${currentUser.username} (${currentUser.level})</span>
-            <a href="#" id="addFriendBtn">Add Friend</a>
-            <a href="#" id="joinGroupBtn">Join Group</a>
-            <a href="#" id="donateBtn">Donate</a>
-            <a href="#" id="logoutBtn">Logout</a>
-        `;
-
-        // Add Event Listeners for new buttons
-        document.getElementById('addFriendBtn').addEventListener('click', () => {
-            addFriendModal.style.display = 'flex';
-        });
-
-        document.getElementById('joinGroupBtn').addEventListener('click', () => {
-            joinGroupModal.style.display = 'flex';
-        });
-
-        document.getElementById('donateBtn').addEventListener('click', () => {
-            donateModal.style.display = 'flex';
-        });
-
-        document.getElementById('logoutBtn').addEventListener('click', () => {
-            currentUser = null;
-            alert('You have been logged out.');
-            document.querySelector('nav').innerHTML = `
-                <a href="#" id="loginBtn">Login</a>
-                <a href="#" id="registerBtn">Register</a>
-                <a href="#" id="donateBtn">Donate</a>
-            `;
-            // Re-attach event listeners
-            document.getElementById('loginBtn').addEventListener('click', () => {
-                loginModal.style.display = 'flex';
-            });
-
-            document.getElementById('registerBtn').addEventListener('click', () => {
-                registerModal.style.display = 'flex';
-            });
-
-            document.getElementById('donateBtn').addEventListener('click', () => {
-                if (currentUser) {
-                    donateModal.style.display = 'flex';
-                } else {
-                    alert('Please login to donate.');
-                }
-            });
-
-            // Clear friends and groups sections
-            friendsList.innerHTML = '<p>No friends added yet.</p>';
-            groupsList.innerHTML = '<p>No groups joined yet.</p>';
-        });
-
-        populateFriends();
-        populateGroups();
-    } else {
-        // If no user is logged in, show default navigation
-        document.querySelector('nav').innerHTML = `
-            <a href="#" id="loginBtn">Login</a>
-            <a href="#" id="registerBtn">Register</a>
-            <a href="#" id="donateBtn">Donate</a>
-        `;
-
-        // Re-attach event listeners for the default navigation items
-        document.getElementById('loginBtn').addEventListener('click', () => {
-            loginModal.style.display = 'flex';
-        });
-
-        document.getElementById('registerBtn').addEventListener('click', () => {
-            registerModal.style.display = 'flex';
-        });
-
-        document.getElementById('donateBtn').addEventListener('click', () => {
+        // Update UI Based on Logged-in User
+        function updateUI() {
             if (currentUser) {
-                donateModal.style.display = 'flex';
+                // Change navigation to show user options, including Donate and Wealth buttons
+                document.querySelector('nav').innerHTML = `
+                    <a href="#" id="addFriendBtn">Add Friend</a>
+                    <a href="#" id="joinGroupBtn">Join Group</a>
+                    <a href="#" id="donateBtn">Donate</a>
+                    <a href="#" id="wealthBtn">Wealth</a>
+                    <a href="#" id="logoutBtn">Logout</a>
+                `;
+
+                // Add Event Listeners for new buttons
+                document.getElementById('addFriendBtn').addEventListener('click', () => {
+                    addFriendModal.style.display = 'flex';
+                });
+
+                document.getElementById('joinGroupBtn').addEventListener('click', () => {
+                    joinGroupModal.style.display = 'flex';
+                });
+
+                document.getElementById('donateBtn').addEventListener('click', () => {
+                    donateModal.style.display = 'flex';
+                });
+
+                document.getElementById('wealthBtn').addEventListener('click', () => {
+                    wealthModal.style.display = 'flex';
+                });
+
+                document.getElementById('logoutBtn').addEventListener('click', () => {
+                    currentUser = null;
+                    alert('You have been logged out.');
+                    document.querySelector('nav').innerHTML = `
+                        <a href="#" id="loginBtn">Login</a>
+                        <a href="#" id="registerBtn">Register</a>
+                        <a href="#" id="donateBtn">Donate</a>
+                    `;
+                    // Re-attach event listeners for the default navigation items
+                    document.getElementById('loginBtn').addEventListener('click', () => {
+                        loginModal.style.display = 'flex';
+                    });
+
+                    document.getElementById('registerBtn').addEventListener('click', () => {
+                        registerModal.style.display = 'flex';
+                    });
+
+                    document.getElementById('donateBtn').addEventListener('click', () => {
+                        if (currentUser) {
+                            donateModal.style.display = 'flex';
+                        } else {
+                            alert('Please login to donate.');
+                        }
+                    });
+
+                    // Clear friends and groups sections
+                    friendsList.innerHTML = '<p>No friends added yet.</p>';
+                    groupsList.innerHTML = '<p>No groups joined yet.</p>';
+                });
+
+                populateFriends();
+                populateGroups();
             } else {
-                alert('Please login to donate.');
+                // If no user is logged in, show default navigation
+                document.querySelector('nav').innerHTML = `
+                    <a href="#" id="loginBtn">Login</a>
+                    <a href="#" id="registerBtn">Register</a>
+                    <a href="#" id="donateBtn">Donate</a>
+                `;
+
+                // Re-attach event listeners for the default navigation items
+                document.getElementById('loginBtn').addEventListener('click', () => {
+                    loginModal.style.display = 'flex';
+                });
+
+                document.getElementById('registerBtn').addEventListener('click', () => {
+                    registerModal.style.display = 'flex';
+                });
+
+                document.getElementById('donateBtn').addEventListener('click', () => {
+                    if (currentUser) {
+                        donateModal.style.display = 'flex';
+                    } else {
+                        alert('Please login to donate.');
+                    }
+                });
             }
-        });
-    }
-}
+        }
+
         // Populate Friends List
         function populateFriends() {
-            if (currentUser.friends.length === 0) {
+            if (!currentUser.friends || currentUser.friends.length === 0) {
                 friendsList.innerHTML = '<p>No friends added yet.</p>';
                 return;
             }
@@ -775,7 +1014,7 @@ function updateUI() {
 
         // Populate Groups List
         function populateGroups() {
-            if (currentUser.groups.length === 0) {
+            if (!currentUser.groups || currentUser.groups.length === 0) {
                 groupsList.innerHTML = '<p>No groups joined yet.</p>';
                 return;
             }
@@ -852,10 +1091,138 @@ function updateUI() {
             populateGroups();
         });
 
-        // Initial Population of Leaderboard and Users Table
+        // Dark Mode Toggle
+        darkModeToggle.addEventListener('change', () => {
+            if (darkModeToggle.checked) {
+                document.body.classList.add('dark-mode');
+            } else {
+                document.body.classList.remove('dark-mode');
+            }
+        });
+
+        // Leaderboard Filters
+        filterWorld.addEventListener('click', () => {
+            filterLeaderboard('world');
+        });
+
+        filterCountry.addEventListener('click', () => {
+            filterLeaderboard('country');
+        });
+
+        filterLocal.addEventListener('click', () => {
+            filterLeaderboard('local');
+        });
+
+        function filterLeaderboard(filterType) {
+            let users = JSON.parse(localStorage.getItem('users'));
+
+            let filteredUsers = [];
+            if (filterType === 'world') {
+                filteredUsers = users;
+            } else if (filterType === 'country') {
+                const userCountry = currentUser ? currentUser.country : null;
+                filteredUsers = users.filter(user => user.country === userCountry);
+            } else if (filterType === 'local') {
+                // For simplicity, assuming 'local' is the same as 'country' in this context
+                const userCountry = currentUser ? currentUser.country : null;
+                filteredUsers = users.filter(user => user.country === userCountry);
+            }
+
+            leaderboard.innerHTML = '';
+
+            // Sort users by amountDonated descending
+            filteredUsers.sort((a, b) => b.amountDonated - a.amountDonated);
+
+            filteredUsers.forEach((user, index) => {
+                const div = document.createElement('div');
+                div.classList.add('leaderboard-item', `level-${user.level}`);
+                div.innerHTML = `
+                    <img src="${user.profilePicture}" alt="${user.username} PFP">
+                    <div class="user-info">
+                        <span class="username">${user.username}</span>
+                        <span class="details">$${user.amountDonated.toLocaleString()} Donated • ${user.country}</span>
+                        <div class="aurora"></div>
+                    </div>
+                `;
+                leaderboard.appendChild(div);
+            });
+        }
+
+        // Chat Functionality
+        sendChat.addEventListener('click', () => {
+            const message = chatMessageInput.value.trim();
+            if (!message) {
+                alert('Please enter a message.');
+                return;
+            }
+
+            if (!currentUser) {
+                alert('Please login to chat.');
+                return;
+            }
+
+            let chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
+            const newMessage = {
+                username: currentUser.username,
+                message: message,
+                timestamp: new Date().toLocaleTimeString()
+            };
+            chatHistory.push(newMessage);
+            localStorage.setItem('chatHistory', JSON.stringify(chatHistory));
+            populateChat();
+            chatMessageInput.value = '';
+        });
+
+        function populateChat() {
+            let chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
+            chatBox.innerHTML = '';
+
+            chatHistory.forEach(msg => {
+                const div = document.createElement('div');
+                div.classList.add('chat-message');
+                const user = JSON.parse(localStorage.getItem('users')).find(u => u.username === msg.username);
+                div.innerHTML = `
+                    <img src="${user ? user.profilePicture : 'https://via.placeholder.com/40'}" alt="${msg.username} PFP">
+                    <div class="message-content">
+                        <strong>${msg.username}</strong>: ${msg.message}
+                        <br>
+                        <small>${msg.timestamp}</small>
+                    </div>
+                `;
+                chatBox.appendChild(div);
+            });
+
+            // Scroll to bottom
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        // Initial Population of Leaderboard
+        function populateLeaderboard() {
+            let users = JSON.parse(localStorage.getItem('users'));
+            leaderboard.innerHTML = '';
+
+            // Sort users by amountDonated descending
+            users.sort((a, b) => b.amountDonated - a.amountDonated);
+
+            users.forEach((user, index) => {
+                const div = document.createElement('div');
+                div.classList.add('leaderboard-item', `level-${user.level}`);
+                div.innerHTML = `
+                    <img src="${user.profilePicture}" alt="${user.username} PFP">
+                    <div class="user-info">
+                        <span class="username">${user.username}</span>
+                        <span class="details">$${user.amountDonated.toLocaleString()} Donated • ${user.country}</span>
+                        <div class="aurora"></div>
+                    </div>
+                `;
+                leaderboard.appendChild(div);
+            });
+        }
+
+        // Initial Population of Chat
         function initialize() {
             populateLeaderboard();
-            populateUsers();
+            populateChat();
         }
 
         // Run initialize on page load
